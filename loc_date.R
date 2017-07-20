@@ -49,17 +49,18 @@ latdir<-getwd()
 
 #dbWriteTable(con,"loc_date",loc.date)
 #dbGetQuerfy(con, "SELECT year FROM loc_date GROUP BY year ORDER BY year")
-loc.date.cdt<-read.csv("loc_date_ctd.csv")
-measure.year<-loc.date.cdt%>%group_by(year) %>% count()
-yearmap <- ggplot(measure.year, aes(year, n)) + geom_bar(
-  stat = "identity", 
-  fill = "forestgreen", 
-  width = 0.25) + coord_flip()
+loc_date_cdt<-read.csv("loc_date_ctd.csv")
+
+measure.year<-table(loc_date_cdt$year) # loc_date_cdt %>% group_by(year) %>% count()
+yearmap<- barplot(measure.year,ylab = "freq",xlab="year")
+
+#yearmap <- ggplot(measure.year, aes(year, n)) + geom_bar(
+#  stat = "identity", 
+#  fill = "forestgreen", 
+#  width = 0.25) + coord_flip()
 yearmap
 
-measure.month<-loc.date.cdt%>%group_by(month) %>% count()
-monthmap <- ggplot(measure.month, aes(month, n)) + geom_bar(
-  stat = "identity", 
-  fill = "forestgreen", 
-  width = 0.25) + coord_flip()
-monthmape
+measure.month<- table(loc_date_cdt$month)  #loc.date.cdt %>% group_by(month) %>% count()
+monthmap<- barplot(measure.month,xlab = "month",ylab="freq")
+monthmap
+
