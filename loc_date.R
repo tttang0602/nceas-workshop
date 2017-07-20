@@ -2,22 +2,22 @@ library(DBI)
 library(tidyverse)
 library(dplyr)
 library(dbplyr)
-
+library(stringr)
 # Read the csv file into text lines
 
-data.ctd<-readLines("ocldb1499972358.22646.CTD.csv")
+data.ctd<-readLines("ocldb1499972358.22646.OSD.csv")
 
 #data.ctd<-readLines("ocldb1499972358.22646.MBT.csv")
 
 # Select the all the cast, latitudes, longtitude and date data from the csv file
 
 ## This set is more general, it includes measurements taken outside of gulf of mexico
-#lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s+(\\S\\d+.\\d+)")
-#lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s+(\\S\\d+.\\d+)")
+lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s+(\\S\\d+.\\d*)")
+lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s+(\\S\\d+.\\d*)")
 
 ## This is set is for Gulf of Meixco
-lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s+(\\d+.\\d+)")
-lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s+(-\\d+.\\d+)")
+#lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s+(\\d+.\\d+)")
+#lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s+(-\\d+.\\d+)")
 
 year<-str_match(data.ctd,"(Year)\\s+,,\\s+(\\d+)")
 month<-str_match(data.ctd,"(Month)\\s+,,\\s+(\\d+)")
@@ -48,12 +48,18 @@ latdir<-getwd()
 #con <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
 
 #dbWriteTable(con,"loc_date",loc.date)
-#dbGetQuery(con, "SELECT year FROM loc_date GROUP BY year ORDER BY year")
-
+#dbGetQuerfy(con, "SELECT year FROM loc_date GROUP BY year ORDER BY year")
+loc.date.cdt<-read.csv("loc_date_ctd.csv")
 measure.year<-loc.date.cdt%>%group_by(year) %>% count()
-p <- ggplot(measure.year, aes(year, n)) + geom_bar(
+yearmap <- ggplot(measure.year, aes(year, n)) + geom_bar(
   stat = "identity", 
   fill = "forestgreen", 
   width = 0.25) + coord_flip()
-p
+yearmap
 
+measure.month<-loc.date.cdt%>%group_by(month) %>% count()
+monthmap <- ggplot(measure.month, aes(month, n)) + geom_bar(
+  stat = "identity", 
+  fill = "forestgreen", 
+  width = 0.25) + coord_flip()
+monthmape
