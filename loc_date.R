@@ -44,13 +44,10 @@ colnames(cast.df)<-c("cast")
 loc.date.cdt<-bind_cols(cast.df,lat.df,lon.df,year.df,month.df,day.df)
 latdir<-getwd()
  write_csv(loc.date.cdt,file.path(dir,"loc_date_cdt.csv"))
-
-#con <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
-
-#dbWriteTable(con,"loc_date",loc.date)
-#dbGetQuerfy(con, "SELECT year FROM loc_date GROUP BY year ORDER BY year")
+ 
+##-----------------------------
+ #read the location and date file and plot measurements by year and by month
 loc_date_cdt<-read.csv("loc_date_ctd.csv")
-
 measure.year<-table(loc_date_cdt$year) # loc_date_cdt %>% group_by(year) %>% count()
 yearmap<- barplot(measure.year,ylab = "freq",xlab="year")
 
