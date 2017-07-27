@@ -12,18 +12,18 @@ data.ctd<-readLines("ocldb1499972358.22646.OSD.csv")
 # Select the all the cast, latitudes, longtitude and date data from the csv file
 
 ## This set is more general, it includes measurements taken outside of gulf of mexico
-lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s+(\\S\\d+.\\d*)")
-lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s+(\\S\\d+.\\d*)")
+lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s*(\\S\\d+.\\d*)")
+lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s*(\\S\\d+.\\d*)")
 
 ## This is set is for Gulf of Meixco
-#lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s+(\\d+.\\d+)")
-#lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s+(-\\d+.\\d+)")
+#lat<-str_match(data.ctd,"(Latitude)\\s+,,\\s*(\\d+.\\d+)")
+#lon<-str_match(data.ctd,"(Longitude)\\s+,,\\s*(-\\d+.\\d+)")
 
-year<-str_match(data.ctd,"(Year)\\s+,,\\s+(\\d+)")
-month<-str_match(data.ctd,"(Month)\\s+,,\\s+(\\d+)")
-day<-str_match(data.ctd,"(Day)\\s+,,\\s+(\\d+)")
-hour<-str_match(data.ctd,"(Time)\\s+,,\\s+(\\d+)")
-cast<-str_match(data.ctd,"(CAST)\\s+,,\\s+(\\d+)")
+year<-str_match(data.ctd,"(Year)\\s+,,\\s*(\\d+)")
+month<-str_match(data.ctd,"(Month)\\s+,,\\s*(\\d+)")
+day<-str_match(data.ctd,"(Day)\\s+,,\\s*(\\d+)")
+hour<-str_match(data.ctd,"(Time)\\s+,,\\s*(\\d+)")
+cast<-str_match(data.ctd,"(CAST)\\s+,,\\s*(\\d+)")
 # Save the latitude data in a matrix with col one lat and col 2 the value of the lat
 lat.df<- data.frame(na.omit(lat[,-1:-2]),stringsAsFactors=FALSE)
 lon.df<- data.frame(na.omit(lon[,-1:-2]),stringsAsFactors=FALSE)
@@ -47,14 +47,14 @@ latdir<-getwd()
  
 ##-----------------------------
  #read the location and date file and plot measurements by year and by month
-loc_date_cdt<-read.csv("loc_date_ctd.csv")
-measure.year<-table(loc_date_cdt$year) # loc_date_cdt %>% group_by(year) %>% count()
-yearmap<- barplot(measure.year,ylab = "freq",xlab="year")
+loc_date_xbt<-read.csv("C:/Users/yiyit/Google Drive/nceas_workshop/loc_date_xbt.csv")
+measure.year<- loc_date_xbt %>% group_by(year) %>% count() #table(loc_date_xbt$year)
+#yearmap<- barplot(measure.year,ylab = "freq",xlab="year")
 
-#yearmap <- ggplot(measure.year, aes(year, n)) + geom_bar(
-#  stat = "identity", 
-#  fill = "forestgreen", 
-#  width = 0.25) + coord_flip()
+yearmap <- ggplot(measure.year, aes(year, n)) + geom_bar(
+ stat = "identity",
+ fill = "forestgreen",
+ width = 0.25) + coord_flip()
 yearmap
 
 measure.month<- table(loc_date_cdt$month)  #loc.date.cdt %>% group_by(month) %>% count()
